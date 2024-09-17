@@ -1,3 +1,9 @@
+cc_library(
+    name = "glad",
+    srcs = ["glad.c"],
+    hdrs = ["glad.h"],
+)
+
 cc_binary(
     name = "viewgl",
     srcs = ["main.cpp"],
@@ -12,8 +18,7 @@ cc_binary(
         "-lglfw",
         "-lGLEW",
     ],
-    data = [
-        "vertex_shader.glsl",
-        "fragment_shader.glsl",
-    ],
+    deps = [
+        ":glad",
+    ]
 )
