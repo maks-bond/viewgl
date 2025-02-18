@@ -1,7 +1,8 @@
-#version 330 core
-in vec3 fragColor;
-out vec4 color;
+#version 460 core
+
+out vec4 fragColor;
+uniform vec3 color; // Allow dynamic color setting
 
 void main() {
-    color = vec4(fragColor, 1.0f);
+    fragColor = vec4(color, 1.0);
 }

@@ -4,6 +4,49 @@ cc_library(
     hdrs = ["glad.h"],
 )
 
+exports_files(["vertex_shader.glsl", "fragment_shader.glsl"])
+
+cc_library(
+    name = "shader",
+    srcs = ["shader.cpp"],
+    hdrs = ["shader.h"],
+    copts = [
+        "-I/usr/include/GL",  # Path to OpenGL headers
+        "-I/usr/local/include",  # Common path for GLFW/GLEW headers
+    ],
+    linkopts = [
+        "-L/usr/lib",  # Path to OpenGL libraries
+        "-L/usr/local/lib",  # Common path for GLFW/GLEW libraries
+        "-lGL",
+        "-lglfw",
+        "-lGLEW",
+    ],
+    deps = [
+        ":glad",
+    ],
+
+)
+
+cc_library(
+    name = "camera",
+    srcs = ["camera.cpp"],
+    hdrs = ["camera.h"],
+    copts = [
+        "-I/usr/include/GL",  # Path to OpenGL headers
+        "-I/usr/local/include",  # Common path for GLFW/GLEW headers
+    ],
+    linkopts = [
+        "-L/usr/lib",  # Path to OpenGL libraries
+        "-L/usr/local/lib",  # Common path for GLFW/GLEW libraries
+        "-lGL",
+        "-lglfw",
+        "-lGLEW",
+    ],
+    deps = [
+        ":glad",
+    ],
+)
+
 cc_binary(
     name = "viewgl",
     srcs = ["main.cpp"],
@@ -20,5 +63,8 @@ cc_binary(
     ],
     deps = [
         ":glad",
-    ]
+        ":shader",
+        ":camera",
+    ],
+    data = ["vertex_shader.glsl", "fragment_shader.glsl"]  # <== Ensure shaders are included
 )
