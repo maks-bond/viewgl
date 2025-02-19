@@ -1,1 +1,21 @@
-1. Read https://learnopengl.com/
+1. Add 1 to come back to original camera view.
+
+
+General thoughts:
+1. It would be cool to create an ability to display a map.
+2. I can start with 2d worlds.
+3. I want to implement reinforcement learning.
+4. A robot should learn to reach a goal state, avoiding collisions.
+5. I would like to implement classic RL and then learned RL.
+6. Robot can be a point to start with.
+7. It would be cool to implement classical planning algorithms like RRT, PRM, and optimization algorithms. 
+8. Even with mpc where I would define a cost function which should lead a robot to the goal. At this point I would need to define a dynamics model and ideally even generate a trajectory.
+
+
+Another idea:
+1. Implement a parallel parking behavior. 
+2. Either produce one trajectory and then have a way to simulate it.
+3. Or do mpc.
+
+Read https://learnopengl.com/
+
