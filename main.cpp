@@ -162,18 +162,18 @@ int main() {
 
         glBindVertexArray(VAO);
         // Draw the solid cube
-    shader.setVec3("color", glm::vec3(1.0f, 0.5f, 0.2f)); // Set cube color to orange
-    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+        shader.setVec3("color", glm::vec3(1.0f, 0.5f, 0.2f)); // Set cube color to orange
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-    // Draw cube edges
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glEnable(GL_LINE_SMOOTH);
-    glLineWidth(2.0f);
-    shader.setVec3("color", glm::vec3(1.0f, 1.0f, 1.0f)); // Set edges to white
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, edgeEBO);
-    glDrawElements(GL_LINES, 24, GL_UNSIGNED_INT, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        // Draw cube edges
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glEnable(GL_LINE_SMOOTH);
+        glLineWidth(2.0f);
+        shader.setVec3("color", glm::vec3(1.0f, 1.0f, 1.0f)); // Set edges to white
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, edgeEBO);
+        glDrawElements(GL_LINES, 24, GL_UNSIGNED_INT, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
