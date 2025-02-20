@@ -1,3 +1,7 @@
+Learn:
+1. Understand shaders.
+2. Understand the difference between view and projection (shader.setMat4("view")...)
+
 1. Add 1 to come back to original camera view.
 2. Extract out cube rendering logic into a helper function.
 3. Then draw walls using small cubes.
