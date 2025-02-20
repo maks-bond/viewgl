@@ -5,6 +5,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "cube.h"
 #include "shader.h"
 #include "camera.h"
 
@@ -91,54 +92,8 @@ int main() {
 
     // Shader setup
     Shader shader("vertex_shader.glsl", "fragment_shader.glsl");
-    
-    // Cube vertices
-    float vertices[] = {
-        -0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f,  0.5f, -0.5f,
-        -0.5f,  0.5f, -0.5f,
-        -0.5f, -0.5f,  0.5f,
-         0.5f, -0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f,  0.5f
-    };
-    unsigned int indices[] = {
-        0, 1, 2, 2, 3, 0,
-        4, 5, 6, 6, 7, 4,
-        0, 1, 5, 5, 4, 0,
-        2, 3, 7, 7, 6, 2,
-        1, 2, 6, 6, 5, 1,
-        3, 0, 4, 4, 7, 3
-    };
 
-    unsigned int edgeIndices[] = {
-        0, 1, 1, 2, 2, 3, 3, 0, // Front face edges
-        4, 5, 5, 6, 6, 7, 7, 4, // Back face edges
-        0, 4, 1, 5, 2, 6, 3, 7  // Connecting edges
-    };
-
-    // Setup cube VAO and VBO
-    unsigned int VBO, VAO, EBO, edgeEBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    // Setup edge EBO
-    glGenBuffers(1, &edgeEBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, edgeEBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(edgeIndices), edgeIndices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+    Cube cube;
 
     // Capture mouse
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -158,22 +113,11 @@ int main() {
         shader.use();
         shader.setMat4("view", camera.GetViewMatrix());
         shader.setMat4("projection", glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / SCR_HEIGHT, 0.1f, 500.0f)); // Increased far plane
-        shader.setMat4("model", glm::mat4(1.0f));
 
-        glBindVertexArray(VAO);
-        // Draw the solid cube
-        shader.setVec3("color", glm::vec3(1.0f, 0.5f, 0.2f)); // Set cube color to orange
-        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-        // Draw cube edges
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        glEnable(GL_LINE_SMOOTH);
-        glLineWidth(2.0f);
-        shader.setVec3("color", glm::vec3(1.0f, 1.0f, 1.0f)); // Set edges to white
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, edgeEBO);
-        glDrawElements(GL_LINES, 24, GL_UNSIGNED_INT, 0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        // Draw multiple cubes
+        cube.draw(shader, glm::vec3(-1.5f, 0.0f, -1.0f), glm::vec3(1.0f, 0.5f, 0.2f)); // Orange
+        cube.draw(shader, glm::vec3(1.5f, 0.0f, -1.0f), glm::vec3(0.2f, 0.3f, 1.0f));  // Blue
+        cube.draw(shader, glm::vec3(0.0f, 1.5f, -1.0f), glm::vec3(0.3f, 1.0f, 0.2f));  // Green
 
         glfwSwapBuffers(window);
         glfwPollEvents();

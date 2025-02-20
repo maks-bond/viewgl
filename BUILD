@@ -24,7 +24,6 @@ cc_library(
     deps = [
         ":glad",
     ],
-
 )
 
 cc_library(
@@ -47,6 +46,28 @@ cc_library(
     ],
 )
 
+cc_library(
+    name = "cube",
+    srcs = ["cube.cpp"],
+    hdrs = ["cube.h"],
+    copts = [
+        "-I/usr/include/GL",  # Path to OpenGL headers
+        "-I/usr/local/include",  # Common path for GLFW/GLEW headers
+    ],
+    linkopts = [
+        "-L/usr/lib",  # Path to OpenGL libraries
+        "-L/usr/local/lib",  # Common path for GLFW/GLEW libraries
+        "-lGL",
+        "-lglfw",
+        "-lGLEW",
+    ],
+    deps = [
+        ":glad", 
+        ":shader",
+    ],
+    visibility = ["//visibility:public"],
+)
+
 cc_binary(
     name = "viewgl",
     srcs = ["main.cpp"],
@@ -63,6 +84,7 @@ cc_binary(
     ],
     deps = [
         ":glad",
+        ":cube",
         ":shader",
         ":camera",
     ],
