@@ -31,7 +31,6 @@ public:
     void ProcessMouseScroll(float yoffset);
     void ProcessPan(float xoffset, float yoffset);
 
-private:
     void updateCameraVectors();
 };
 

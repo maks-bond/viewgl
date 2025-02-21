@@ -10,7 +10,7 @@ public:
     unsigned int VAO, VBO, EBO, edgeEBO;
 
     Cube();  // Constructor initializes cube data
-    void draw(Shader& shader, glm::vec3 position, glm::vec3 color);
+    void draw(Shader& shader, glm::vec3 position, glm::vec3 color, glm::vec3 scale);
     ~Cube(); // Destructor to clean up GPU memory
 };
 

@@ -54,10 +54,13 @@ Cube::Cube() {
     glBindVertexArray(0);
 }
 
-void Cube::draw(Shader& shader, glm::vec3 position, glm::vec3 color) {
+void Cube::draw(Shader& shader, glm::vec3 position, glm::vec3 color, glm::vec3 scale) {
     shader.use();
 
     glm::mat4 model = glm::translate(glm::mat4(1.0f), position);
+    model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f)); // Rotate to align with X-Y
+    model = glm::scale(model, scale);  
+
     shader.setMat4("model", model);
 
     // Draw solid cube

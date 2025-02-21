@@ -28,7 +28,7 @@ void Camera::ProcessMouseScroll(float yoffset) {
     float prevZoom = Zoom;
     Zoom -= yoffset;
     if (Zoom < 1.0f) Zoom = 1.0f;
-    if (Zoom > 150.0f) Zoom = 150.0f;
+    if (Zoom > 1000.0f) Zoom = 1000.0f;
 
     // Adjust position smoothly only if zoom is changing
     if (prevZoom != Zoom) {

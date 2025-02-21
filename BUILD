@@ -68,6 +68,12 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
+cc_library(
+    name = "colors",
+    hdrs = ["colors.h"],
+    visibility = ["//visibility:public"],
+)
+
 cc_binary(
     name = "viewgl",
     srcs = ["main.cpp"],
@@ -85,6 +91,7 @@ cc_binary(
     deps = [
         ":glad",
         ":cube",
+        ":colors",
         ":shader",
         ":camera",
     ],
