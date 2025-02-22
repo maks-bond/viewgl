@@ -61,6 +61,34 @@ void processInput(GLFWwindow *window) {
         glfwSetWindowShouldClose(window, true);
 }
 
+void drawWalls(Cube& cube, Shader& shader) {
+    glm::vec3 wallColor = Colors::Orange;
+    
+    // Wall Scale: width = 1.0, height = 5.0, length = 100.0
+    glm::vec3 verticalWallScale = glm::vec3(1.0f, 100.0f, 5.0f);  // X as thickness
+    glm::vec3 horizontalWallScale = glm::vec3(100.0f, 1.0f, 5.0f); // Z as thickness
+
+    // Left Wall
+    cube.draw(shader, glm::vec3(-50.5f, 2.5f, 0.0f), wallColor, verticalWallScale);
+    
+    // Right Wall
+    cube.draw(shader, glm::vec3(50.5f, 2.5f, 0.0f), wallColor, verticalWallScale);
+
+    // Top Wall
+    cube.draw(shader, glm::vec3(0.0f, 2.5f, -50.5f), wallColor, horizontalWallScale);
+
+    // Bottom Wall
+    cube.draw(shader, glm::vec3(0.0f, 2.5f, 50.5f), wallColor, horizontalWallScale);
+}
+
+void drawFloor(Cube &cube, Shader &shader) {
+    glm::vec3 floorPosition = glm::vec3(0.0f, 0.0f, -0.05f); // Adjusted Z to lie flat
+    glm::vec3 floorColor = Colors::Gray50;
+    glm::vec3 floorScale = glm::vec3(100.0f, 100.0f, 0.1f); // Z is now the thin axis
+
+    cube.draw(shader, floorPosition, floorColor, floorScale);
+}
+
 int main() {
     // Initialize GLFW
     glfwInit();
@@ -128,11 +156,8 @@ int main() {
         shader.setMat4("projection", glm::perspective(glm::radians(camera.Zoom), 
                         (float)SCR_WIDTH / SCR_HEIGHT, 0.01f, 5000.0f));
 
-        glm::vec3 floorPosition = glm::vec3(0.0f, 0.0f, -0.05f); // Adjusted Z to lie flat
-        glm::vec3 floorColor = Colors::Gray50;
-        glm::vec3 floorScale = glm::vec3(100.0f, 100.0f, 0.1f); // Z is now the thin axis
-
-        cube.draw(shader, floorPosition, floorColor, floorScale);
+        drawFloor(cube, shader);
+        drawWalls(cube, shader); // Draw the walls
 
         glfwSwapBuffers(window);
         glfwPollEvents();
