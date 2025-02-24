@@ -152,7 +152,13 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         shader.use();
+        // View matrix tells how we view the world. Camera is considered to be at [0, 0, 0].
+        // When we rotate we change yaw and pitch which then affect camera's Front vector which defines its orientation.
+        // Camera's Position vector tells where in 3d world the camera is.
+        // Camera's Up vector is fixed. Chat GPT says that y usually represents height. I can consider changing that as it might be creating problems for me as in my 3d representation z is height vector.
         shader.setMat4("view", camera.GetViewMatrix());
+        // This defines 3d to 2d screen projections. glm::perspective returns such a matrix.
+        // First two values are straightforward. It is really interesting to understand what near and far clipping planes define.
         shader.setMat4("projection", glm::perspective(glm::radians(camera.Zoom), 
                         (float)SCR_WIDTH / SCR_HEIGHT, 0.01f, 5000.0f));
 
