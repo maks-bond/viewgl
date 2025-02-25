@@ -2,7 +2,7 @@
 
 Camera::Camera(glm::vec3 position, float zoom)
     : Position(position), WorldUp(glm::vec3(0.0f, 1.0f, 0.0f)), Yaw(-90.0f), Pitch(0.0f), Zoom(zoom) {
-    Position = Front * -Zoom;  // Ensure initial position respects zoom level
+    Position += Front * -Zoom;  // Ensure initial position respects zoom level
     updateCameraVectors();
 }
 

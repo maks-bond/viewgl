@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 #include "glad.h"
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -22,14 +23,17 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
-Camera camera(glm::vec3(0.0f, 60.0f, 0.0f), 100.0);
-
 // Callback functions
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
+    Camera* camera = static_cast<Camera*>(glfwGetWindowUserPointer(window));
+    if (!camera) {
+        std::cout<<"No camera"<<std::endl;
+        return;
+    }
     if (firstMouse) {
         lastX = xpos;
         lastY = ypos;
@@ -44,16 +48,21 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
     int leftState = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
     int rightState = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT);
     if (leftState == GLFW_PRESS) {
-        camera.ProcessMouseMovement(xoffset, yoffset);
+        camera->ProcessMouseMovement(xoffset, yoffset);
     }
     if (rightState == GLFW_PRESS) {
-        camera.ProcessPan(xoffset, yoffset);
+        camera->ProcessPan(xoffset, yoffset);
     }
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-    camera.ProcessMouseScroll(yoffset * 2.5);
-    std::cout<<"New zoom is: "<<camera.Zoom<<std::endl;
+    Camera* camera = static_cast<Camera*>(glfwGetWindowUserPointer(window));
+    if (!camera) {
+        std::cout<<"No camera"<<std::endl;
+        return;
+    }
+    camera->ProcessMouseScroll(yoffset * 2.5);
+    std::cout<<"New zoom is: "<<camera->Zoom<<std::endl;
 }
 
 void processInput(GLFWwindow *window) {
@@ -104,11 +113,10 @@ int main() {
         return -1;
     }
 
-    // Camera setup
-    camera.Yaw = -90.0f;
-    camera.Pitch = -89.9f;
-    camera.Zoom = 100.0f;
-    camera.updateCameraVectors();
+    std::shared_ptr<Camera> camera = std::make_shared<Camera>(glm::vec3(0.0f, 50.0f, 100.0f), 65.0);
+    camera->Yaw = -90.0f;
+    camera->Pitch = -30.0f;
+    camera->updateCameraVectors();
 
     glfwMakeContextCurrent(window);
 
@@ -120,6 +128,7 @@ int main() {
 
     // Set viewport and callbacks
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+    glfwSetWindowUserPointer(window, camera.get());
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetScrollCallback(window, scroll_callback);
@@ -136,8 +145,8 @@ int main() {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
     shader.use();
-    shader.setMat4("projection", glm::perspective(glm::radians(camera.Zoom), 
-                    (float)SCR_WIDTH / SCR_HEIGHT, 0.01f, 5000.0f));
+    shader.setMat4("projection", glm::perspective(glm::radians(glm::clamp(camera->Zoom, 30.0f, 75.0f)), 
+                (float)SCR_WIDTH / SCR_HEIGHT, 0.1f, 1000.0f));
 
     // Render loop
     while (!glfwWindowShouldClose(window)) {
@@ -156,11 +165,11 @@ int main() {
         // When we rotate we change yaw and pitch which then affect camera's Front vector which defines its orientation.
         // Camera's Position vector tells where in 3d world the camera is.
         // Camera's Up vector is fixed. Chat GPT says that y usually represents height. I can consider changing that as it might be creating problems for me as in my 3d representation z is height vector.
-        shader.setMat4("view", camera.GetViewMatrix());
+        shader.setMat4("view", camera->GetViewMatrix());
         // This defines 3d to 2d screen projections. glm::perspective returns such a matrix.
         // First two values are straightforward. It is really interesting to understand what near and far clipping planes define.
-        shader.setMat4("projection", glm::perspective(glm::radians(camera.Zoom), 
-                        (float)SCR_WIDTH / SCR_HEIGHT, 0.01f, 5000.0f));
+        shader.setMat4("projection", glm::perspective(glm::radians(glm::clamp(camera->Zoom, 30.0f, 75.0f)), 
+                (float)SCR_WIDTH / SCR_HEIGHT, 0.1f, 1000.0f));
 
         drawFloor(cube, shader);
         drawWalls(cube, shader); // Draw the walls
