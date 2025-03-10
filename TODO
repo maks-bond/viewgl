@@ -1,11 +1,8 @@
 Learn:
 1. Understand shaders.
-2. Add 1 to come back to original camera view.
 3. Establish limits for camera controls.
-4. Update pan to be able to move farther.
+4. Update pan to be able to move faster.
 5. Come up with reinforcement learning task and start working on it.
-
-1. Add 1 to come back to original camera view.
 
 General thoughts:
 1. It would be cool to create an ability to display a map. - DONE
