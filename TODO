@@ -8,7 +8,7 @@ Learn:
 1. Add 1 to come back to original camera view.
 
 General thoughts:
-1. It would be cool to create an ability to display a map.
+1. It would be cool to create an ability to display a map. - DONE
 2. I can start with 2d worlds.
 3. I want to implement reinforcement learning in continous space.
 4. A robot should learn to reach a goal state, avoiding collisions.
