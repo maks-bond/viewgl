@@ -65,9 +65,28 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
     std::cout<<"New zoom is: "<<camera->Zoom<<std::endl;
 }
 
+std::shared_ptr<Camera> camera = nullptr;
+
+void reset_camera() {
+    if(!camera) {
+        camera = std::make_shared<Camera>(glm::vec3(0.0f, 50.0f, 100.0f), 65.0);
+    }
+
+    camera->Position = glm::vec3(0.0f, 50.0f, 100.0f);
+    camera->Zoom = 65.0f;
+    camera->Yaw = -90.0f;
+    camera->Pitch = -30.0f;
+    camera->updateCameraVectors();
+}
+
 void processInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+
+    // Add handling for '1' to reset camera to the original position
+    if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+        reset_camera();
+    }
 }
 
 void drawWalls(Cube& cube, Shader& shader) {
@@ -113,10 +132,7 @@ int main() {
         return -1;
     }
 
-    std::shared_ptr<Camera> camera = std::make_shared<Camera>(glm::vec3(0.0f, 50.0f, 100.0f), 65.0);
-    camera->Yaw = -90.0f;
-    camera->Pitch = -30.0f;
-    camera->updateCameraVectors();
+    reset_camera();
 
     glfwMakeContextCurrent(window);
 
