@@ -37,24 +37,24 @@ void Camera::ProcessMouseScroll(float yoffset) {
 }
 
 void Camera::ProcessPan(float xoffset, float yoffset) {
-    float panSpeed = 0.005f; // Reduce panning speed to make it more manageable
-    glm::vec3 right = glm::normalize(glm::cross(Front, WorldUp)); 
+    // float panSpeed = 0.005f; // Reduce panning speed to make it more manageable
+    // glm::vec3 right = glm::normalize(glm::cross(Front, WorldUp)); 
+    // glm::vec3 up = glm::normalize(WorldUp);
+
+    // Position -= right * xoffset * panSpeed;
+    // Position -= up * yoffset * panSpeed;
+    float panSpeed = 0.05f; // Increase panning speed to make it more manageable
+
+    // Calculate the right and up vectors in camera space
+    glm::vec3 right = glm::normalize(glm::cross(Front, WorldUp));
     glm::vec3 up = glm::normalize(WorldUp);
 
-    Position -= right * xoffset * panSpeed;
-    Position -= up * yoffset * panSpeed;
-    // float panSpeed = 0.005f; // Reduce panning speed to make it more manageable
+    // Create a vector representing the direction of panning in the ground plane
+    glm::vec3 panDirection = xoffset * right + yoffset * up;
 
-    // // Calculate the right and up vectors in camera space
-    // glm::vec3 right = glm::normalize(glm::cross(Front, WorldUp));
-    // glm::vec3 down = glm::normalize(-WorldUp);  // Opposite of Up for downward direction
-
-    // // Create a vector representing the direction of panning in the ground plane
-    // glm::vec3 panDirection = xoffset * right + yoffset * down;
-
-    // // Update position horizontally and vertically
-    // Position.x += panDirection.x * panSpeed;
-    // Position.z -= panDirection.z * panSpeed;  // Subtract because moving forward in camera space moves you back in world space
+    // Update position horizontally (ignoring vertical component)
+    Position.x -= panDirection.x * panSpeed;
+    Position.z += panDirection.y * panSpeed;
 
     // // Ensure the camera does not go below or above the ground level (optional)
     // if (Position.y < -10.0f) { // Adjust the value based on your scene setup
