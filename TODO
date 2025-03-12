@@ -1,8 +1,15 @@
 Learn:
 1. Understand shaders.
-3. Establish limits for camera controls.
-4. Update pan to be able to move faster.
+3. Establish limits for camera controls. - GOOD STATE
 5. Come up with reinforcement learning task and start working on it.
+
+March 11th:
+Switch to rl task. First come up with a good problem and then implement it. Have visualization of a timer.
+
+Chat GPT suggests:
+DDPG (Deep Deterministic Policy Gradient): Works well for continuous control.
+SAC (Soft Actor-Critic): More robust in noisy environments.
+PPO (Proximal Policy Optimization): A strong general-purpose approach.
 
 General thoughts:
 1. It would be cool to create an ability to display a map. - DONE

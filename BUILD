@@ -74,6 +74,18 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
+cc_library(
+    name = "state",
+    hdrs = ["state.h"],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "action",
+    hdrs = ["action.h"],
+    visibility = ["//visibility:public"],
+)
+
 cc_binary(
     name = "viewgl",
     srcs = ["main.cpp"],
