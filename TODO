@@ -11,6 +11,11 @@ DDPG (Deep Deterministic Policy Gradient): Works well for continuous control.
 SAC (Soft Actor-Critic): More robust in noisy environments.
 PPO (Proximal Policy Optimization): A strong general-purpose approach.
 
+Going to focus on soft actor critic method.
+https://arxiv.org/abs/1801.01290
+https://arxiv.org/abs/1812.05905
+https://arxiv.org/abs/1702.08165
+
 General thoughts:
 1. It would be cool to create an ability to display a map. - DONE
 2. I can start with 2d worlds.
